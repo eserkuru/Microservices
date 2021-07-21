@@ -10,10 +10,10 @@ using MongoDB.Driver;
 
 namespace Course.Services.Catalog.Services
 {
-    internal class CourseService : ICourseService
+    public class CourseService : ICourseService
     {
         private readonly IMongoCollection<Models.Course> _courseCollection;
-        private readonly IMongoCollection<Category> _cateogoryCollection;
+        private readonly IMongoCollection<Category> _categoryCollection;
         private readonly IMapper _mapper;
 
         public CourseService(IMapper mapper, IDatabaseSettings databaseSettings)
@@ -22,6 +22,8 @@ namespace Course.Services.Catalog.Services
             var database = client.GetDatabase(databaseSettings.DatabaseName);
 
             _courseCollection = database.GetCollection<Models.Course>(databaseSettings.CourseCollectionName);
+            _categoryCollection = database.GetCollection<Category>(databaseSettings.CategoryCollectionName);
+
             _mapper = mapper;
         }
 
@@ -33,7 +35,7 @@ namespace Course.Services.Catalog.Services
             {
                 foreach (var course in courses)
                 {
-                    course.Category = await _cateogoryCollection.Find(category => category.Id == course.CategoryId).FirstAsync();
+                    course.Category = await _categoryCollection.Find(category => category.Id == course.CategoryId).FirstAsync();
                 }
             }
             else
@@ -53,7 +55,7 @@ namespace Course.Services.Catalog.Services
                 return Response<CourseDto>.Fail("Course not found.", 400);
             }
 
-            course.Category = await _cateogoryCollection.Find(category => category.Id == course.CategoryId).FirstAsync();
+            course.Category = await _categoryCollection.Find(category => category.Id == course.CategoryId).FirstAsync();
 
             return Response<CourseDto>.Success(_mapper.Map<CourseDto>(course), 200);
         }
@@ -66,7 +68,7 @@ namespace Course.Services.Catalog.Services
             {
                 foreach (var course in courses)
                 {
-                    course.Category = await _cateogoryCollection.Find(category => category.Id == course.CategoryId).FirstAsync();
+                    course.Category = await _categoryCollection.Find(category => category.Id == course.CategoryId).FirstAsync();
                 }
             }
             else

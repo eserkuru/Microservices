@@ -2,7 +2,7 @@
 
 namespace Course.Services.Catalog.Dtos.Course
 {
-    internal class CourseUpdateDto
+    public class CourseUpdateDto
     {
         public string Id { get; set; }
 

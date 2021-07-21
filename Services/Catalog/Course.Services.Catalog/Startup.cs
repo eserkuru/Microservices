@@ -31,6 +31,7 @@ namespace Course.Services.Catalog
             });
 
             services.AddSingleton<ICategoryService, CategoryService>();
+            services.AddSingleton<ICourseService, CourseService>();
 
             services.AddSwaggerGen(c =>
             {
